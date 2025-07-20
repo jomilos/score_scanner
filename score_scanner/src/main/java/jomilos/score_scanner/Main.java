@@ -25,7 +25,7 @@ public class Main {
 
                 try {
                         try (FileReader reader = new FileReader(
-                                        "/home/andrey/Projects/score_scanner_run/score_scanner.properties",
+                                        System.getProperty("score_scanner.home", System.getProperty("user.home")) + "/score_scanner.properties",
                                         StandardCharsets.UTF_8)) {
                                 JavaPropsMapper mapper = new JavaPropsMapper();
                                 Config config = mapper.readValue(reader, Config.class);

@@ -25,23 +25,22 @@ public class Main {
 
                 try {
                         try (FileReader reader = new FileReader(
-                                        System.getProperty("score_scanner.home", System.getProperty("user.home")) + "/score_scanner.properties",
+                                        System.getProperty("score_scanner.home", System.getProperty("user.home"))
+                                                        + "/score_scanner.properties",
                                         StandardCharsets.UTF_8)) {
                                 JavaPropsMapper mapper = new JavaPropsMapper();
                                 Config config = mapper.readValue(reader, Config.class);
                                 for (Request request : config.requests)
                                         retrievers.add(RetrieverThreadFactory.newRetrieverThread(request));
+
+                                for (Thread t : retrievers)
+                                        t.start();
+
+                                for (Thread t : retrievers)
+                                        t.join();
                         }
 
-                        for (Thread t : retrievers)
-                                t.start();
-
-                        for (Thread t : retrievers)
-                                t.join();
-
-                } catch (
-
-                Exception e) {
+                } catch (Exception e) {
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new PrintWriter(sw);
                         e.printStackTrace(pw);

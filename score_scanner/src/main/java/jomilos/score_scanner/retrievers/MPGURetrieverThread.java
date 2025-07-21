@@ -17,7 +17,7 @@ public class MPGURetrieverThread extends RetrieverThread {
     }
 
     @Override
-    public void parseData(WebDriver driver, String userID) {
+    public void parseData(WebDriver driver, String userid) {
         WebElement tbody = driver.findElement(By.tagName("tbody"));
         for (WebElement tr : tbody.findElements(By.tagName("tr"))) {
             if (tr.getAttribute("class").equals("R16")) {

@@ -17,11 +17,11 @@ public class MIREARetrieverThread extends RetrieverThread {
     }
 
     @Override
-    public void parseData(WebDriver driver, String userID) {
+    public void parseData(WebDriver driver, String userid) {
         WebElement tbody = driver.findElement(By.tagName("tbody"));
         for (WebElement tr : tbody.findElements(By.tagName("tr"))) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (tds.get(3).getText().equals("да") || tds.get(1).getText().equals(userID))
+            if (tds.get(3).getText().equals("да") || tds.get(1).getText().equals(userid))
                 addResult(new Result(
                         tds.get(0).getText(),
                         tds.get(1).getText(),

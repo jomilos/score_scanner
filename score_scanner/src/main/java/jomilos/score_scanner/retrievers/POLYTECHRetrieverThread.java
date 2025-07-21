@@ -17,7 +17,7 @@ public class POLYTECHRetrieverThread extends RetrieverThread {
     }
 
     @Override
-    public void parseData(WebDriver driver, String userID) {
+    public void parseData(WebDriver driver, String userid) {
         Select select = new Select(driver.findElement(By.name("select2")));
         select.selectByVisibleText("09.03.02.01 Информационные системы и технологии");
 
@@ -31,7 +31,7 @@ public class POLYTECHRetrieverThread extends RetrieverThread {
         List<WebElement> trs = driver.findElements(By.id("pkm_"));
         for (WebElement tr : trs) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (tds.get(11).getText().trim().equals("да") || tds.get(2).getText().trim().equals(userID))
+            if (tds.get(11).getText().trim().equals("да") || tds.get(2).getText().trim().equals(userid))
                 addResult(new Result(
                         tds.get(0).getText().trim(),
                         tds.get(2).getText().trim(),

@@ -29,8 +29,8 @@ public class Main {
                                                         + "/score_scanner.properties",
                                         StandardCharsets.UTF_8)) {
                                 JavaPropsMapper mapper = new JavaPropsMapper();
-                                Config config = mapper.readValue(reader, Config.class);
-                                for (Request request : config.requests)
+                                Config.setConfig(mapper.readValue(reader, Config.class));
+                                for (Request request : Config.getConfig().requests)
                                         retrievers.add(RetrieverThreadFactory.newRetrieverThread(request));
 
                                 for (Thread t : retrievers)

@@ -4,13 +4,13 @@ import jomilos.score_scanner.util.Request;
 
 public class RetrieverThreadFactory {
     public static RetrieverThread newRetrieverThread(Request request) {
-        return switch (request.university) {
-            case "МИРЭА" -> new MIREARetrieverThread(request);
-            case "МИСИС" -> new MISISReatrieverThread(request);
-            case "МПГУ" -> new MPGURetrieverThread(request);
-            case "ПОЛИТЕХ" -> new POLYTECHRetrieverThread(request);
-            case "РГУК" -> new RGUKRetrieverThread(request);
-            default -> throw new RuntimeException("Неизвестный университет: " + request.university);
+        return switch (Universities.getUniversityByUrl(request.url)) {
+            case MIREA -> new MIREARetrieverThread(request);
+            case MISIS -> new MISISReatrieverThread(request);
+            case MPGU -> new MPGURetrieverThread(request);
+            case POLYTECH -> new POLYTECHRetrieverThread(request);
+            case RGUK -> new RGUKRetrieverThread(request);
+            case UNKNOWN -> throw new RuntimeException("Неизвестный университет: " + request.url);
         };
     }
 }

@@ -43,7 +43,6 @@ public class Main {
                         while (!service.awaitTermination(1, TimeUnit.MINUTES)) {
                         }
 
-                        logger.info("FINISH");
                 } catch (Exception e) {
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new PrintWriter(sw);

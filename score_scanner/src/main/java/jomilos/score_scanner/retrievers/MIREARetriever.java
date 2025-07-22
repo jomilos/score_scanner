@@ -10,9 +10,9 @@ import jomilos.score_scanner.util.Result;
 
 import org.openqa.selenium.WebDriver;
 
-public class MIREARetrieverThread extends RetrieverThread {
+public class MIREARetriever extends Retriever {
 
-    public MIREARetrieverThread(Request request) {
+    public MIREARetriever(Request request) {
         super(request);
     }
 

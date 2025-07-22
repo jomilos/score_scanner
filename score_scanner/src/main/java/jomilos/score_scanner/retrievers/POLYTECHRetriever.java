@@ -10,9 +10,9 @@ import org.openqa.selenium.support.ui.Select;
 import jomilos.score_scanner.util.Request;
 import jomilos.score_scanner.util.Result;
 
-public class POLYTECHRetrieverThread extends RetrieverThread {
+public class POLYTECHRetriever extends Retriever {
 
-    public POLYTECHRetrieverThread(Request request) {
+    public POLYTECHRetriever(Request request) {
         super(request);
     }
 

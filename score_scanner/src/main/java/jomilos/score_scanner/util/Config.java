@@ -5,6 +5,7 @@ import java.util.List;
 public class Config {
     public List<Request> requests;
     public String browser;
+    public int parallel;
 
     private static Config config;
 

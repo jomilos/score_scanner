@@ -21,7 +21,7 @@ import jomilos.score_scanner.util.Config;
 import jomilos.score_scanner.util.Request;
 import jomilos.score_scanner.util.Result;
 
-public abstract class RetrieverThread extends Thread {
+public abstract class Retriever implements Runnable {
 
     private String URL;
     private String userid;
@@ -35,18 +35,19 @@ public abstract class RetrieverThread extends Thread {
     private static final Object MONITOR = new Object();
     private static final int WIDTH = 40;
 
-    public RetrieverThread(Request request) {
+    public Retriever(Request request) {
         URL = request.url;
         userid = request.userid;
         university = request.university;
         if (university == null)
             university = Universities.getUniversityByUrl(request.url).getDefaultName();
         specialization = request.specialization;
-        setName(university + " " + specialization);
+        Thread.currentThread().setName(university + " " + specialization);
     }
 
     @Override
     public void run() {
+        Thread.currentThread().setName(university + " " + specialization);
         logger.info("Поток запущен");
         try {
             logger.info("Запускаю браузер " + Config.getConfig().browser);

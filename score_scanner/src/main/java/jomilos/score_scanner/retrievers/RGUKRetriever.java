@@ -10,26 +10,31 @@ import jomilos.score_scanner.util.Result;
 
 import org.openqa.selenium.WebDriver;
 
-public class MISISReatrieverThread extends RetrieverThread {
+public class RGUKRetriever extends Retriever {
 
-    public MISISReatrieverThread(Request request) {
+    public RGUKRetriever(Request request) {
         super(request);
     }
 
     @Override
     public void parseData(WebDriver driver, String userid) {
+        driver.manage().window().maximize();
         WebElement tbody = driver.findElement(By.tagName("tbody"));
         for (WebElement tr : tbody.findElements(By.tagName("tr"))) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (!tds.get(15).getText().isEmpty() || tds.get(1).getText().equals(userid))
+            String id = tds.get(2).getText().split("\n")[0];
+            if (tds.get(11).getText().equals("Да") || id.equals(userid))
                 addResult(new Result(
                         tds.get(0).getText(),
-                        tds.get(1).getText(),
+                        id,
                         tds.get(3).getText(),
-                        tds.get(4).getText()));
+                        tds.get(10).getText()));
         }
+        WebElement header = driver.findElement(By.className("main-block__header"));
+        for (WebElement p : header.findElements(By.tagName("p")))
+            if (p.getText().contains("Количество мест:"))
+                setSeats(p.getText().split(": ")[1]);
 
-        String seats = driver.findElement(By.tagName("itog")).getText();
-        setSeats(seats);
     }
+
 }

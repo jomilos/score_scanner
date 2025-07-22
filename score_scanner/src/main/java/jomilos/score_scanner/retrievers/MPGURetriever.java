@@ -10,9 +10,9 @@ import jomilos.score_scanner.util.Result;
 
 import org.openqa.selenium.WebDriver;
 
-public class MPGURetrieverThread extends RetrieverThread {
+public class MPGURetriever extends Retriever {
 
-    public MPGURetrieverThread(Request request) {
+    public MPGURetriever(Request request) {
         super(request);
     }
 

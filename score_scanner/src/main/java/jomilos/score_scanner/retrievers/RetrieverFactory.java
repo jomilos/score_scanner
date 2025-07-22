@@ -3,7 +3,7 @@ package jomilos.score_scanner.retrievers;
 import jomilos.score_scanner.util.Request;
 
 public class RetrieverFactory {
-    public static Retriever newRetrieverThread(Request request) {
+    public static Retriever newRetriever(Request request) {
         return switch (Universities.getUniversityByUrl(request.url)) {
             case MIREA -> new MIREARetriever(request);
             case MISIS -> new MISISReatriever(request);

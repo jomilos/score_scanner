@@ -37,7 +37,7 @@ public class Main {
 
                         ExecutorService service = Executors.newFixedThreadPool(parallel);
                         for (Request request : Config.getConfig().requests)
-                                service.execute(RetrieverFactory.newRetrieverThread(request));
+                                service.execute(RetrieverFactory.newRetriever(request));
 
                         service.shutdown();
                         while (!service.awaitTermination(1, TimeUnit.MINUTES)) {

@@ -21,7 +21,7 @@ public class MISISReatriever extends Retriever {
         WebElement tbody = driver.findElement(By.tagName("tbody"));
         for (WebElement tr : tbody.findElements(By.tagName("tr"))) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (!tds.get(15).getText().isEmpty() || tds.get(1).getText().equals(userid))
+            if (!tds.get(17).getText().isBlank() || tds.get(1).getText().equals(userid))
                 addResult(new Result(
                         tds.get(0).getText(),
                         tds.get(1).getText(),

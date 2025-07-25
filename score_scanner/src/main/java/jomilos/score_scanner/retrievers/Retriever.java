@@ -17,16 +17,13 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import jomilos.score_scanner.util.Browser;
 import jomilos.score_scanner.util.Config;
 import jomilos.score_scanner.util.Request;
 import jomilos.score_scanner.util.Result;
 
 public abstract class Retriever implements Runnable {
 
-    private String URL;
-    private String userid;
-    private String university;
-    private String specialization;
     private List<Result> result;
     private String seats;
     private WebDriver driver;
@@ -34,30 +31,25 @@ public abstract class Retriever implements Runnable {
 
     private static final Object MONITOR = new Object();
     private static final int WIDTH = 40;
+    private Request request;
 
     public Retriever(Request request) {
-        URL = request.url;
-        userid = request.userid;
-        university = request.university;
-        if (university == null)
-            university = Universities.getUniversityByUrl(request.url).getDefaultName();
-        specialization = request.specialization;
-        Thread.currentThread().setName(university + " " + specialization);
+        this.request = request;
     }
 
     @Override
     public void run() {
-        Thread.currentThread().setName(university + " " + specialization);
+        Thread.currentThread().setName(request.university + " " + request.specialization);
         logger.info("Поток запущен");
         try {
             logger.info("Запускаю браузер " + Config.getConfig().browser);
             startWebDriver();
 
-            logger.info("Запрашиваю страницу конкурса {}", URL);
+            logger.info("Запрашиваю страницу конкурса {}", request.url);
             retrieveData();
 
-            logger.info("Анализирую страницу конкурса {}", URL);
-            parseData(driver, userid);
+            logger.info("Анализирую страницу конкурса {}", request.url);
+            parseData(driver, request.userid);
 
             logger.info("Готовлю результат обработки данных");
             renderResult();
@@ -84,8 +76,8 @@ public abstract class Retriever implements Runnable {
 
     private void renderError() {
         synchronized (MONITOR) {
-            renderHeader(university, "*");
-            renderHeader(specialization, "-");
+            renderHeader(request.university, "*");
+            renderHeader(request.specialization, "-");
             System.out.println("Ошибка обработки данных!");
             System.out.println();
         }
@@ -93,11 +85,11 @@ public abstract class Retriever implements Runnable {
 
     private void renderResult() {
         synchronized (MONITOR) {
-            renderHeader(university, "*");
-            renderHeader(specialization, "-");
+            renderHeader(request.university, "*");
+            renderHeader(request.specialization, "-");
             System.out.println("\tN\tИД\tПр\tБаллы");
             for (int i = 0; i < result.size(); i++) {
-                if (result.get(i).id().equals(userid))
+                if (result.get(i).id().equals(request.userid))
                     System.out.print((i + 1) + "*\t");
                 else
                     System.out.print((i + 1) + "\t");
@@ -121,32 +113,31 @@ public abstract class Retriever implements Runnable {
     }
 
     private void startWebDriver() {
-        String browser = Config.getConfig().browser;
+        // TODO отрефакторить в фабрику?
+        Browser browser = Config.getConfig().browserType;
         switch (browser) {
-            case "FireFox" -> {
+            case FIREFOX -> {
                 FirefoxOptions options = new FirefoxOptions();
                 options.addArguments("-headless");
                 driver = new FirefoxDriver(options);
-                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
             }
-            case "Chrome" -> {
+            case CHROME -> {
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--headless=new");
                 driver = new ChromeDriver(options);
-                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
             }
-            case "Edge" -> {
+            case EDGE -> {
                 EdgeOptions options = new EdgeOptions();
                 options.addArguments("--headless=new");
                 driver = new EdgeDriver(options);
-                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
             }
-            default -> throw new RuntimeException("Неизвестный браузер: " + browser);
+            default -> throw new RuntimeException("Не могу запустить драйвер для " + browser);
         }
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
     }
 
     private void retrieveData() {
-        driver.get(URL);
+        driver.get(request.url);
         result = new ArrayList<>();
     }
 

@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import jomilos.score_scanner.util.Request;
 import jomilos.score_scanner.util.Result;
 
-public class POLYTECHRetriever extends Retriever {
+public class POLYTECHRetriever extends Retriever { // TODO доделать для бюджета - парсинг общего кол-ва мест и таблицы
 
     public POLYTECHRetriever(Request request) {
         super(request);
@@ -28,20 +28,31 @@ public class POLYTECHRetriever extends Retriever {
                 break;
             }
 
+        WebElement isFin = driver
+                .findElement(By.xpath("/html/body/main/div/div/table[3]/tbody/tr/td/div/table/tbody/tr[1]/td[12]"));
+        int yesPos = 12;
+        int priorityPos = 13;
+        int scorePos = 10;
+        if (isFin.getAttribute("title").contains("договор")) {
+            yesPos = 11;
+            priorityPos = 12;
+            scorePos = 9;
+        }
         List<WebElement> trs = driver.findElements(By.id("pkm_"));
         for (WebElement tr : trs) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (tds.get(11).getText().trim().equals("да") || tds.get(2).getText().trim().equals(userid))
+            if (tds.get(yesPos).getText().trim().equals("да") || tds.get(2).getText().trim().equals(userid))
                 addResult(new Result(
                         tds.get(0).getText().trim(),
                         tds.get(2).getText().trim(),
-                        tds.get(12).getText().trim(),
-                        tds.get(9).getText().trim()));
+                        tds.get(priorityPos).getText().trim(),
+                        tds.get(scorePos).getText().trim()));
         }
 
-        String seats = driver.findElement(By.xpath("/html/body/main/div/div/table[2]/tbody/tr/td/b"))
+        String seats = (driver.findElement(By.xpath("/html/body/main/div/div/table[2]/tbody/tr/td/b"))
                 .getText()
-                .split(": ")[3];
+                .split(":")[3])
+                .split("\\n")[0];
         setSeats(seats);
     }
 

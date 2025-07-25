@@ -63,8 +63,7 @@ public class Config {
     private void validateRequest() throws InvalidConfigurationException {
         for (int i = 0; i < requests.size(); i++) {
             Request request = config.requests.get(i);
-            if (request == null)
-                continue;
+
             if (request.url == null || request.url.isBlank())
                 throw new InvalidConfigurationException("Не задан url по индексу " + i);
 

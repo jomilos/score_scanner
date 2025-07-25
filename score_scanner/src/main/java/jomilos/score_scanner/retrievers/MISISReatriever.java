@@ -19,9 +19,13 @@ public class MISISReatriever extends Retriever {
     @Override
     public void parseData(WebDriver driver, String userid) {
         WebElement tbody = driver.findElement(By.tagName("tbody"));
+        WebElement finance = driver.findElement(By.tagName("finans"));
+        int yesPos = 16;
+        if (finance.getText().equals("внебюджет"))
+            yesPos = 17;
         for (WebElement tr : tbody.findElements(By.tagName("tr"))) {
             List<WebElement> tds = tr.findElements(By.tagName("td"));
-            if (!tds.get(17).getText().isBlank() || tds.get(1).getText().equals(userid))
+            if (!tds.get(yesPos).getText().isBlank() || tds.get(1).getText().equals(userid))
                 addResult(new Result(
                         tds.get(0).getText(),
                         tds.get(1).getText(),

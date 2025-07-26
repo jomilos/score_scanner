@@ -4,7 +4,7 @@
 ### Запуск
 `java -Dscore_scanner.home=/path/to/dir -jar score_scanner-1.1-jar-with-dependencies.jar`
 
-Где: `score_scanner.home` - папка, в которой находится конфигурационный файл `score_scanner.properties` и в которую пишется лог работы программы `score_scanner.log`. Если параметр опущен при запуске, то испольщзуется домашний каталог пользователя.
+Где: `score_scanner.home` - папка, в которой находится конфигурационный файл `score_scanner.properties` и в которую пишется лог работы программы `score_scanner.log`. Если параметр опущен при запуске, то используется домашний каталог пользователя.
 ### Настройка (score_scanner.properties)
 Пример настроечного файла для анализа двух конкрусных списков:
 ```
